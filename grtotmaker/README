@@ -1,0 +1,2 @@
+rdf_maker.sh
+Just run in folder with RDFDAT and will make total g(r) and individual PDFs, may have to add neutron scattering lengths to python script

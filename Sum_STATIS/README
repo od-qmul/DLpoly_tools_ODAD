@@ -1,0 +1,7 @@
+Reads STATIS file and outputs as readable file
+
+Run as 
+
+$python3 read_statis.py xcolumn ycolumn1 ycolumn2 ... ycolumnN
+
+where the columns are integers

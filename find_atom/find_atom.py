@@ -1,5 +1,5 @@
-#Python script to read CONFIG files and resize by percentage or lattice parameter
-#Oliver Dicks 05/02/2018
+#Python script to read CONFIG files and find atoms within R of a coordinate
+#Oliver Dicks 26/04/2019
 
 import sys
 import numpy as np
@@ -87,12 +87,15 @@ class write_config:
 
         outfile.close()
         
-"""
 inlist=sys.argv
 for i in range(1,len(inlist)):
-    inlist[i]=real(inlist[i])
-"""    
+    inlist[i]=float(inlist[i])
+R=inlist[1:4]
+rcutoff=inlist[4]
+rcutsq=rcutoff**2
 config=Read_config("CONFIG")
-print(config.atom_data[5])
-
+for atom in config.atom_data:
+  distsq=(atom[2][0]-R[0])**2+(atom[2][1]-R[1])**2+(atom[2][2]-R[2])**2
+  if distsq<rcutsq:  
+    print(atom)
 

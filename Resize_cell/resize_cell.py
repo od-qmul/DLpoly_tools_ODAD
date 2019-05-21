@@ -9,6 +9,7 @@ import copy
 def frac_coord(cartpos,latpar):
     r=np.array(cartpos)
     latpar=np.array(latpar)
+    latpar=latpar.transpose()
     rfrac=np.linalg.tensorsolve(latpar,r)
     return rfrac
 
@@ -113,6 +114,7 @@ def get_new_coords(fracin,new_latpar):
     frac=copy.deepcopy(fracin)
     final_atom_data = []
     lat=np.array(new_latpar)
+    lat=lat.transpose()
     for i in range(len(frac)):
         temp_frac=np.array(frac[i][1])
         temp_newcoord = np.inner(lat,temp_frac)

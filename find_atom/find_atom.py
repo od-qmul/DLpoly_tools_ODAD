@@ -9,6 +9,7 @@ import copy
 def frac_coord(cartpos,latpar):
     r=np.array(cartpos)
     latpar=np.array(latpar)
+    latpar=latpar.transpose()
     rfrac=np.linalg.tensorsolve(latpar,r)
     return rfrac
 

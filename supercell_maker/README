@@ -1,0 +1,5 @@
+#Run using:
+
+python3 supercell_maker.py X Y Z
+
+#Where X Y Z is the supercell dimensions, takes file named CONFIG as input and outputs newCONFIG

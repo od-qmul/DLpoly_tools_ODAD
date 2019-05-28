@@ -1,5 +1,5 @@
-#Python script to read CONFIG files and find atoms within R of a coordinate
-#Oliver Dicks 26/04/2019
+#Python script to read CONFIG files and resize by percentage or lattice parameter
+#Oliver Dicks 05/02/2018
 
 import sys
 import numpy as np
@@ -87,16 +87,59 @@ class write_config:
             outfile.write(coord_string)
 
         outfile.close()
-        
-inlist=sys.argv
-for i in range(1,len(inlist)):
-    inlist[i]=float(inlist[i])
-R=inlist[1:4]
-rcutoff=inlist[4]
-rcutsq=rcutoff**2
-config=Read_config("CONFIG")
-for atom in config.atom_data:
-  distsq=(atom[2][0]-R[0])**2+(atom[2][1]-R[1])**2+(atom[2][2]-R[2])**2
-  if distsq<rcutsq:  
-    print(atom)
 
+def get_new_coords(fracin,new_latpar):
+    frac=copy.deepcopy(fracin)
+    final_atom_data = []
+    lat=np.array(new_latpar)
+    lat=lat.transpose()
+    for i in range(len(frac)):
+        temp_frac=np.array(frac[i][1])
+        temp_newcoord = np.inner(lat,temp_frac)
+        temp_line = frac[i]
+        temp_line[1]=temp_newcoord
+        final_atom_data.append(temp_line)
+    return final_atom_data      
+
+def create_supercell(frac_data,lat_par, scellsize):
+    sfrac_data=[]
+    for atdat in frac_data:
+        for i in range(0,(scellsize[0])):
+            for j in range(0,(scellsize[1])):
+                for k in range(0,(scellsize[2])):
+                    newatdat=copy.deepcopy(atdat)
+                    newatdat[1][0]=(newatdat[1][0]+float(i))/float(scellsize[0])
+                    newatdat[1][1]=(newatdat[1][1]+float(j))/float(scellsize[1])
+                    newatdat[1][2]=(newatdat[1][2]+float(k))/float(scellsize[2])
+                    sfrac_data.append(newatdat)
+    for i in range(len(sfrac_data)):
+        sfrac_data[i][0][1]=i+1
+#        for j in range(3):
+#            while (sfrac_data[i][1][j] <= -0.500):
+#                sfrac_data[i][1][j]=sfrac_data[i][1][j]+1.00
+#            while (sfrac_data[i][1][j] > 0.500):
+#                sfrac_data[i][1][j]=sfrac_data[i][1][j]-1.00
+    return(sfrac_data)
+
+
+#Input 3 integers to define supercell
+inlist=sys.argv
+scell_xxx=[]
+for i in range(1,len(inlist)):
+    scell_xxx.append(int(inlist[i]))
+
+config=Read_config("CONFIG")
+
+newlatpar=[]
+#Rescale lattice parameters
+for i in range(3):
+    a=[]
+    for j in range(3):
+        a.append(float(scell_xxx[i])*config.lat_par[i][j])
+    newlatpar.append(a)
+sfrac=create_supercell(config.frac_data,config.lat_par,scell_xxx)
+final_coord=get_new_coords(sfrac,newlatpar)
+write_config("newCONFIG",final_coord,newlatpar)
+
+
+    

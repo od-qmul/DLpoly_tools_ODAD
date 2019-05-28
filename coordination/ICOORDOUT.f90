@@ -8,7 +8,7 @@ character (len=40) :: skip,filename
 real, allocatable :: fracx(:),fracy(:),fracz(:)
 real :: v(1:3,1:3),x,y,z,a,b,c,vol,al,be,ga,testz,testy,testx,mass(1:30),amu,time
 Logical :: newatom,itsopen
-numsteps=6
+numsteps=1000
 amu=0
 jj=0
 open(30,file='input')
@@ -39,7 +39,7 @@ end if
 
  write(20+i,'(F9.6,I7)',advance='no')time,inumcoorded
 do while(atm1.eq.atm1check .and. atm2.eq.atm2check)
-write(20+i,fmt='(I7)',advance='no')numcoorded
+write(20+i,fmt='(I7,1x)',advance='no')numcoorded
 read(10,fmt='(A3)',advance='no')atm1check !,atm2check,coordination,numcoorded
 
 

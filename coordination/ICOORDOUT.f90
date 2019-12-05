@@ -11,12 +11,12 @@ Logical :: newatom,itsopen
 numsteps=1000
 amu=0
 jj=0
+
 open(30,file='input')
 read(30,*)numatmtypes,numatms,numuniquepairs
 do i=1,numatmtypes
  read(30,*)inputypes(i)
 enddo
- 
 close(30)
 
 open(10,file='ICOORD', status='old')
@@ -28,45 +28,42 @@ do i = 1 ,numatms
 enddo
 
 do ii= 1,numsteps
-read(10,'(a40,I10,F20.6)')skip,steps,time
-do i = 1,numuniquepairs
-jj=0
-if(i.eq.1)then
-read(10,*)atm1,atm2,icoordination,inumcoorded
-endif
-read(10,*)atm1check,atm2check,coordination,numcoorded
 
-write (filename,'(A1,A1,A1,A4)')atm1,'-',atm2,'.dat'
+  read(10,'(a40,I10,F20.6)')skip,steps,time
+  do i = 1,numuniquepairs
+    jj=0
+    if(i.eq.1)then
+      read(10,*)atm1,atm2,icoordination,inumcoorded
+    endif
+    read(10,*)atm1check,atm2check,coordination,numcoorded
 
-if(ii.eq.1)then
-open (unit=20+i, access='sequential', file=filename)
-write(20+i,'(A10,15I9)')'time',0,1,2,3,4,5,6,7,8,9,10,11,12,13,14
-end if
+    write (filename,'(A1,A1,A1,A4)')atm1,'-',atm2,'.dat'
 
-write(20+i,'(F10.6,1x,I8)',advance='no')time,inumcoorded
 
-do while(atm1.eq.atm1check .and. atm2.eq.atm2check)
-write(20+i,fmt='(1x,I8)',advance='no')numcoorded
-read(10,fmt='(A3)',advance='no')atm1check !,atm2check,coordination,numcoorded
+    if(ii.eq.1)then
+      open (unit=20+i, access='sequential', file=filename)
+      write(20+i,'(A10,15I9)')'time',0,1,2,3,4,5,6,7,8,9,10,11,12,13,14
+    end if
+    write(20+i,'(F10.6,1x,I8)',advance='no')time,inumcoorded
 
-!If(atm1.eq.'O' .and. atm2.eq.'Si')then
-!        print*,coordination,numcoorded,inumcoorded
-!endif
+    do while(atm1.eq.atm1check .and. atm2.eq.atm2check)
+      write(20+i,fmt='(1x,I8)',advance='no')numcoorded
+      read(10,fmt='(A3)',advance='no')atm1check !,atm2check,coordination,numcoorded
 
-if(atm1check.eq.'oo')then
+      if(atm1check.eq.'oo')then
         exit
-else
-read(10,*)atm2check,coordination,numcoorded
-endif
+      else
+        read(10,*)atm2check,coordination,numcoorded
+      endif
 
+    enddo
+    atm1=atm1check
+    atm2=atm2check
+    inumcoorded=numcoorded
+    write(20+i,*)
+  enddo
 enddo
-atm1=atm1check
-atm2=atm2check
-inumcoorded=numcoorded
-write(20+i,*)
-enddo
-enddo
 
 
 
- end
+end

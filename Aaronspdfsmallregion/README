@@ -1,0 +1,8 @@
+In the actual code will need to specify postion to build boxes around 
+
+in X0 and X1
+in y0 and y1
+in z0 and z1
+
+z1-z0 must be larger than 30 angstongs
+due to way i split up the boxes in the first place

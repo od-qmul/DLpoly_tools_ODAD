@@ -3,3 +3,4 @@ example included
 should run fine besides that and will produce files to be read by python script
 the icoordinput file is the same as used for all 
 will split up your CONFIG or REVCON into boxes of 10x10x10 angstromgs and calculate a density for the box
+outputs values of density in the x-y plane with each slice in z

@@ -1,0 +1,4 @@
+general ICOORD and CCOORD tools
+ICOORDOUT colates the coordination statitics for each species
+CCOORDOUT will write number of coordination displacements for eah atom species at each timestep
+atomeCCOORD will produce cfg files to be read by atomeye of the coordination displacements

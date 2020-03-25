@@ -1,0 +1,5 @@
+will produce defect density map
+to specificy defect 2nd line of icoordinaput is the example
+so will find all Si-O not 4 coordinated at call them defects
+these defects will be put into relevant boxes that the CONFIG has been split up into
+needs CONFIG and ICOORD as input files with icoordinput

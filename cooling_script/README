@@ -1,0 +1,1 @@
+Bash script for performing a constant rate temperature change using DL-POLY. Care must be taken to input the correct step number and timestep size in the CONTROL file in ./init/

@@ -1,0 +1,5 @@
+Code finds atom of type X within r Angstroms near coordinates (rx,ry,rz) and replaces with a U atom
+
+Example input
+
+python swap_and_transmute.py --atom Si --position -150.0 -150.0 -150.0 --around 5.0  --level 0

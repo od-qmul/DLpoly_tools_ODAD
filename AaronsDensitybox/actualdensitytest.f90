@@ -64,7 +64,7 @@ numinz=nint((c-boxlen)/shift +1)
 x0=-a/2
 y0=-b/2
 z0=-c/2
-allocate(boxlist(1:numinx,1:numiny,1:numinz,0:100000))
+allocate(boxlist(1:numinx,1:numiny,1:numinz,0:10000))
 allocate(boxmass(1:numinx,1:numiny,1:numinz))
 boxlist(:,:,:,:)=0
 boxmass(:,:,:)=0
@@ -112,13 +112,13 @@ close(10)
 !open(40,file='icoordefects.xyz')
 !write(40,*)numdefects
 !write(40,*)title
-x0=-a/2
-y0=-b/2
-z0=-c/2
-allocate(boxlist(1:numinx,1:numiny,1:numinz,0:100000))
-allocate(boxmass(1:numinx,1:numiny,1:numinz))
-boxlist(:,:,:,:)=0
-boxmass(:,:,:)=0
+!x0=-a/2
+!y0=-b/2
+!z0=-c/2
+!allocate(boxlist(1:numinx,1:numiny,1:numinz,0:100000))
+!allocate(boxmass(1:numinx,1:numiny,1:numinz))
+!boxlist(:,:,:,:)=0
+!boxmass(:,:,:)=0
 print*,'Number of slices=',numinx,numiny,numinz
      
 

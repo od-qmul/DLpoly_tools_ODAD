@@ -1,8 +1,8 @@
 Program hellompi
-use mpi
+!use mpi
 implicit none
 integer::ierror,myRank,uniSize,version,subversion,i,ii,iii,iiii,j,jj,jjj,numatoms,numregion,numcom,&
-         status(MPI_STATUS_SIZE),iMyName,counter,x0,x1,y0,y1,z0,z1,nskip,&
+         iMyName,counter,x0,x1,y0,y1,z0,z1,nskip,&
          numinx,numinz,numiny,indx,numinbox,k,kk,kkk,bins(1:200),numbins,&
          biginx,biginy,biginz
 real :: delr,bin,rcut,v(1:3,1:3),rarea,&
@@ -11,19 +11,52 @@ real :: delr,bin,rcut,v(1:3,1:3),rarea,&
 real , allocatable ::x(:),y(:),z(:)
 integer , allocatable::boxlist(:,:,:,:),bboxlist(:,:,:,:)
 character( len=2) ::atomtype
-character(len=MPI_MAX_PROCESSOR_NAME)::myName
+!character(len=MPI_MAX_PROCESSOR_NAME)::myName
 character(len=60)::order
+
+character(len=20) :: x0char,x1char,y0char,y1char,z0char,z1char
+
+x0 = 0.0
+x1 = 0.0
+y0 = 0.0
+y1 = 0.0
+z0 = 0.0
+z1 = 0.0
+
+if (command_argument_count().NE.6) then
+  write(*,*)"Error, 6 command line arguments required, x0, x1, y0, y1, z0, z1"
+  stop
+end if
+
+call get_command_argument(1,x0char)
+call get_command_argument(2,x1char)
+call get_command_argument(3,y0char)
+call get_command_argument(4,y1char)
+call get_command_argument(5,z0char)
+call get_command_argument(6,z1char)
+
+read(x0char,*)x0
+read(x1char,*)x1
+read(y0char,*)y0
+read(y1char,*)y1
+read(z0char,*)z0
+read(z1char,*)z1
+
+write(*,'(6F12.7)') x0,x1,y0,y1,z0,z1
+
+
 counter=0
 
-call MPI_Init(ierror)
-call MPI_Comm_size(MPI_COMM_WORLD,uniSize,ierror)
-call MPI_Comm_rank(MPI_COMM_WORLD,myRank, ierror)
-call MPI_Get_processor_name(myName,iMyName, ierror)
-call MPI_Get_version(version,subversion, ierror)
+!call MPI_Init(ierror)
+!call MPI_Comm_size(MPI_COMM_WORLD,uniSize,ierror)
+!call MPI_Comm_rank(MPI_COMM_WORLD,myRank, ierror)
+!call MPI_Get_processor_name(myName,iMyName, ierror)
+!call MPI_Get_version(version,subversion, ierror)
 ! definig region to search
 ! 29.246, 33.732, 83.796 
 ! 10,10,60
-x0=-160 ; x1=-120; y0=-160 ; y1=-120; z0=-160 ; z1=-120
+!x0=-150.0 ; x1=-100.0; y0=-150.0 ; y1=-100.0; z0=-150.0 ; z1=-100.0
+
 rcut=10.0
 bin=0
 delr=0.05
@@ -42,7 +75,7 @@ bboxlist(:,:,:,:)=0
 if(myRank==0)then
  open(20,file='test')
  open(30,file='pdf.dat')
- open(10,file='CONFIG1', status='old')
+ open(10,file='REVCON', status='old')
  read(10,*)
  read(10,*)nskip,nskip,numatoms
  
@@ -151,6 +184,7 @@ enddo
 enddo
 enddo
 print*,numcom
+write(30,'("INput coordinates: "(6F12.7))') x0,x1,y0,y1,z0,z1
 do i = 1,numbins
  write(30,*)((delr*(i-1)+delr*i))/2,real(bins(i))/(((((delr*i)**3) - (delr*(i-1))**3))*numdenbox*constant*numcom)
 
@@ -180,7 +214,6 @@ else
 ! call MPI_SEND(order,3,MPI_CHARACTER,0,10,MPI_COMM_WORLD,status,ierror)
 endif
 
-call MPI_FINALIZE(ierror)
 
 
 

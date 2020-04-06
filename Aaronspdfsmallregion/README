@@ -1,4 +1,6 @@
-In the actual code will need to specify postion to build boxes around 
+In the command line will need to specify postion to build boxes around 
+
+/$PATH/program.exe x0 x1 y0 y1 z0 z1
 
 in X0 and X1
 in y0 and y1

@@ -2,7 +2,7 @@ import sys
 import copy
 
 #List of scattering lengths in fm
-listb=[['B', 5.30], ['Na', 3.64], ['Al', 3.449], ['Ca', 4.7], ['Si', 4.1491], ['O', 5.803],['Zr',7.160]]
+listb=[['B', 5.30], ['Na', 3.64], ['Al', 3.449], ['Ca', 4.7], ['Si', 4.1491], ['O', 5.803],['Zr',7.160],['U',8.417]]
 class Read_field:
     def __init__(self, input_file):
         #Open FIELD file

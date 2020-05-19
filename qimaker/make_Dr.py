@@ -1,8 +1,9 @@
 import sys
 import copy
-
+import numpy as np
 #Using RMC profile definition of G(r) and gij(r) in order to generate S(Q)
 
+#Scattering lengths defined in fm
 listb=[['B', 5.30], ['Na', 3.64], ['Al', 3.449], ['Ca', 4.7], ['Si', 4.1491], ['O', 5.803],['Zr',7.160],['U', 10.47]]
 class Read_field:
     def __init__(self, input_file):
@@ -58,6 +59,7 @@ Natom = copy.deepcopy(field.atomlist)
 #Define total number of atoms
 Ntot=0
 for i in range(len(Natom)):
+    print(Natom[i])
     Ntot=Ntot+Natom[i][1]
 
 #Define c1c2b1b2 for each pair
@@ -73,6 +75,7 @@ for pair in pair_atoms:
         A=1.0
     if pair[0]!=pair[1]:
         A=2.0
+#    A=1.0
     c1c2=A*float(N1*N2)/(float(Ntot)*float(Ntot))
     for element in listb:
         if pair[0]==element[0]:
@@ -85,23 +88,31 @@ for pair in pair_atoms:
 sumcoln=0
 for term in coln:
     sumcoln=sumcoln+term
+print(sumcoln)
 
-for i in range(len(coln)):
-    coln[i]=coln[i]/sumcoln
+#for i in range(len(coln)):
+#    coln[i]=coln[i]/sumcoln
 
-#Define Gr as Sum_ij (c_i*c_j*b_i*b_j*(g_ij(r)-1)    
+#Define D(r) = 4*pi*rho*r Sum_ij (c_i*c_j*b_i*b_j*(g_ij(r)-1)    
 
-TotGr=[]
+rho = float(Ntot)/1.3385E+08
+
+TotDr=[]
 
 for i in range(1,len(lines)):
-    grtot=0.0
+    Drtot=0.0
     for j in range(1,len(lines[i])):
-        grtot=grtot+(float(lines[i][j])-1.0)*coln[(j-1)]
-    TotGr.append([float(lines[i][0]),grtot])
+        Drtot=Drtot+(float(lines[i][j])-1.0)*coln[(j-1)]
+    r=float(lines[i][0])
+    Drtot=4*rho*np.pi*r*Drtot
+#To convert to barns Angstrom^(-2)
+    Drtot=Drtot/100
 
-outfile=open('Grtot.dat','w')
+    TotDr.append([float(lines[i][0]),Drtot])
 
-for rpos in TotGr:
+outfile=open('Drtot.dat','w')
+
+for rpos in TotDr:
     info="%16.8f   %16.12f\n" % (float(rpos[0]),rpos[1])
     outfile.write(info)
 

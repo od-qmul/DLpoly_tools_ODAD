@@ -2,6 +2,7 @@ import sys
 import numpy as np
 import copy
 
+
 def rand_coord():
     rand_coord=np.random.uniform(-0.5,0.5,size=3)
     return rand_coord

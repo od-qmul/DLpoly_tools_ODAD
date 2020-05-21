@@ -54,7 +54,6 @@ for atom in lines[0]:
         cnt=0
 
 Natom = copy.deepcopy(field.atomlist)
-
 #Define total number of atoms
 Ntot=0
 for i in range(len(Natom)):
@@ -82,22 +81,15 @@ for pair in pair_atoms:
     b1b2= b1*b2
     coln.append(c1c2*b1b2)
 
-sumcoln=0
-for term in coln:
-    sumcoln=sumcoln+term
-
-for i in range(len(coln)):
-    coln[i]=coln[i]/sumcoln
-
-#Define Gr as Sum_ij (c_i*c_j*b_i*b_j*(g_ij(r)-1)    
+#Define Gr as Sum_ij (c_i*c_j*b_i*b_j*(g_ij(r)-1))   
 
 TotGr=[]
 
 for i in range(1,len(lines)):
-    grtot=0.0
+    Gr=0.0
     for j in range(1,len(lines[i])):
-        grtot=grtot+(float(lines[i][j])-1.0)*coln[(j-1)]
-    TotGr.append([float(lines[i][0]),grtot])
+        Gr=Gr+(float(lines[i][j])-1.0)*coln[(j-1)]
+    TotGr.append([float(lines[i][0]),Gr])
 
 outfile=open('Grtot.dat','w')
 
@@ -107,5 +99,28 @@ for rpos in TotGr:
 
 outfile.close()
 
+#Define normalisation term for Gdash where Gdash-1=Gr/(Sum_ijc_i*b_i)^2 from Keen JAC (2000)
+
+sumbici = 0.0
+
+for atomspec in Natom:
+  for element in listb:
+    if atomspec[0]==element[0]:
+      bici=(float(atomspec[1])/float(Ntot))*element[1]
+  sumbici = sumbici + bici
+  
+normfactor=sumbici**(-2)
+print("(Sum_i bi*ci)^-2 = %16.8f" % (normfactor))
+Grdash =  copy.deepcopy(TotGr)
+for i in range(len(TotGr)):
+  Grdash[i][1]=(TotGr[i][1]*normfactor)+1.0
+
+outfile2=open('Grdash.dat','w')
+
+for rpos in Grdash:
+    info="%16.8f   %16.12f\n" % (float(rpos[0]),rpos[1])
+    outfile2.write(info)
+
+outfile2.close()
 
 

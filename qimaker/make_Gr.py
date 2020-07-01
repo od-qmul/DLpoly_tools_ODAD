@@ -94,7 +94,7 @@ for i in range(1,len(lines)):
 outfile=open('Grtot.dat','w')
 
 for rpos in TotGr:
-    info="%16.8f   %16.12f\n" % (float(rpos[0]),rpos[1])
+    info="%16.8f   %16.12f\n" % (rpos[0],rpos[1])
     outfile.write(info)
 
 outfile.close()

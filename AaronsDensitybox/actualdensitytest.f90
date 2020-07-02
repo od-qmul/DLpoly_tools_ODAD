@@ -10,7 +10,7 @@ integer ,allocatable :: indx(:),boxlist(:,:,:,:),coordnum(:)
 character(len=2)::coordpairs(1:100,1:2),atm1,atm2,currentatm,tempatm(1:100)
 character(len=2), allocatable::atm(:),atomtypes(:)
 character(len=80):: title
-logical:: correctatm
+logical:: correctatm,file_exists
 boxlen=10
 shift=10
 amu=1.66054e-27
@@ -47,7 +47,14 @@ allocate(z(1:numatoms))
 currentatm=''
 numdefects=0
 
-open(30,file='CONFIG',status='old')
+inquire(file="REVCON", exist=file_exists)
+
+if (file_exists .eqv. .true.) then
+  open(30,file='REVCON',status='old')
+else
+  open(30,file='CONFIG',status='old')
+end if
+
 read(30,'(a80)')title
 read(30,*)
 do j = 1,3

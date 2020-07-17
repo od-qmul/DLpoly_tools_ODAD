@@ -1,9 +1,9 @@
 program find_defects_from_ICOORD
 integer :: numatoms,numpairs,perfectcoord(1:100),coord,coordpair,&
            numdefects,i,ii,iii,j,jj,jjj,Next,aux,tempindx(1:100),&
-           numinx,numiny,numinz,shift,numregion,numuniq,numtest,&
+           numinx,numiny,numinz,numregion,numuniq,numtest,&
            ndef,numbins,bin
-real    :: v(1:3,1:3),a,b,c,amu,denconstant,delr,coordaverage,binmin
+real    :: v(1:3,1:3),a,b,c,amu,denconstant,delr,coordaverage,binmin,boxlen,shift
 real ,allocatable :: defects(:,:),atomass(:),boxmass(:,:,:),&
                     x(:),y(:),z(:),bins(:)
 integer ,allocatable :: indx(:),boxlist(:,:,:,:),coordnum(:)
@@ -35,7 +35,9 @@ allocate(atomass(1:numuniq))
 do i=1,numuniq
 read(10,*)atomtypes(i),atomass(i)
 enddo
-
+read(10,*)boxlen
+print*,boxlen
+shift=boxlen
 allocate(indx(1:numatoms))
 allocate(coordnum(1:numatoms))
 allocate(atm(1:numatoms))
@@ -74,8 +76,8 @@ do i = 1,numatoms
 
 read(30,*)atm(i),indx(i)
 read(30,*)x(i),y(i),z(i)
-read(30,*)
-read(30,*)
+!read(30,*)
+!read(30,*)
 
 do j= 1,numinx
 do jj=1,numiny

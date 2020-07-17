@@ -6,7 +6,8 @@ paste x*| awk  '{printf "%s  ", $1 ;for (i=2;i<=NF;i+=2) printf "%s  ", $i; prin
 cat rdfhead rdf_temp.dat > rdf_alla.dat 
 sed "2d" rdf_alla.dat > rdf_all.dat
 rm rdfhead rdf_temp.dat rdf_alla.dat
-#python3 ~/bin/grtotmaker/make_rdf.py
+python3 ~/bin/grtotmaker/make_Gr.py
+python3 ~/bin/grtotmaker/make_SFQiG.py
 #num_files=0
 #for i in x*; do
 #num_files+=1

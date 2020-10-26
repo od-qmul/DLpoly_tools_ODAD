@@ -46,6 +46,8 @@ class Read_field:
                     atomprops.append(int(self.lines[i][1])) #append nummols
                     self.atomlist.append(atomprops)
                 
+rho=4997.0/6.4242E+04
+
 field=Read_field("FIELD")
 
 #Open rdf_all.dat produced by bash script from RDFDAT
@@ -139,7 +141,7 @@ outfile2.close()
 #grdata=pd.read_csv("Grtot.dat",header=None,delim_whitespace=True)
 gr=np.array(TotGr)
 gr=np.transpose(gr)
-print(gr)
+#print(gr)
 rlist=gr[0]
 Gr=gr[1]
 
@@ -148,7 +150,6 @@ Qlist=np.arange(0.1,45.1,0.05)
 QiQlist=[]
 FQlist=[]
 SQlist=[]
-rho=4997.0/40.1294647120**3
 
 for Q in Qlist:
     QiQlist.append(QiQ(Q,Gr,rlist,rho))

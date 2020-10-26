@@ -46,9 +46,16 @@ class Read_field:
                     atomprops.append(int(self.lines[i][1])) #append nummols
                     self.atomlist.append(atomprops)
                 
-rho=4997.0/6.4242E+04
-
 field=Read_field("FIELD")
+OUTPUT_file=open("OUTPUT","r")
+
+#Extract volume from OUTPUT in Angstrom^3
+lines = OUTPUT_file.readlines()
+for i in range(len(lines)):
+  if lines[i][0:20] =="run terminated after":
+    line = lines[i+8].split()
+    volume = float(line[1])
+
 
 #Open rdf_all.dat produced by bash script from RDFDAT
 rdf_file = open("rdf_all.dat",'r')
@@ -74,6 +81,11 @@ Ntot=0
 for i in range(len(Natom)):
     Ntot=Ntot+Natom[i][1]
 
+#Define number density rho
+rho = float(Ntot)/volume
+print("rho (n density) = %16.8f" % rho)
+print("volume          = %16.8f" % volume)
+print("number of atoms = %16.8f" % Ntot)
 #Define c1c2b1b2 for each pair
 coln=[]
 

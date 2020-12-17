@@ -13,7 +13,7 @@ def QiQ(Q,G,rlist,rho):
     integral=4*np.pi*rho*integral
     return integral
 
-print("Did you remain to change rho (number density N/V)")
+print("Did you remain to change rho (number density N/V) if no OUTPUT to read")
 
 listb=[['B', 5.30], ['Na', 3.64], ['Al', 3.449], ['Ca', 4.7], ['Si', 4.1491], ['O', 5.803],['Zr',7.160],['U', 10.47]]
 
@@ -86,6 +86,7 @@ rho = float(Ntot)/volume
 print("rho (n density) = %16.8f" % rho)
 print("volume          = %16.8f" % volume)
 print("number of atoms = %16.8f" % Ntot)
+
 #Define c1c2b1b2 for each pair
 coln=[]
 
@@ -129,15 +130,26 @@ outfile.close()
 #Define normalisation term for Gdash where Gdash-1=Gr/(Sum_ijc_i*b_i)^2 from Keen JAC (2000)
 
 sumbici = 0.0
+sumsqbici = 0.0
 
 for atomspec in Natom:
   for element in listb:
     if atomspec[0]==element[0]:
       bici=(float(atomspec[1])/float(Ntot))*element[1]
   sumbici = sumbici + bici
+  sumsqbici = sumsqbici + bici**2
   
 normfactor=sumbici**(-2)
 print("(Sum_i bi*ci)^-2 = %16.8f" % (normfactor))
+
+#Write logfile
+logfile=open('log_sfqiGmaker','w')
+logfile.write("rho (n density)  = %16.8f\n" % rho)
+logfile.write("volume           = %16.8f\n" % volume)
+logfile.write("number of atoms  = %16.8f\n" % Ntot)
+logfile.write("(Sum_i bi*ci)^2  = %16.8f\n" % (sumbici**2))
+logfile.write("Sum_i (bi*ci^2)  = %16.8f\n" % (sumsqbici))
+
 Grdash =  copy.deepcopy(TotGr)
 for i in range(len(TotGr)):
   Grdash[i][1]=(TotGr[i][1]*normfactor)+1.0

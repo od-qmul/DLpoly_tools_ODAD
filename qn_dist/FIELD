@@ -1,0 +1,24 @@
+DL_POLY : Pure SiO2 glass with wang potential
+units eV
+molecular types 2
+
+Silicon atoms
+nummols 666
+atoms 1
+Si             28.09    1.89    1     0    1
+finish
+
+Oxygen atoms
+nummols 1332
+atoms 1
+O              16.00   -0.945   1     0    1
+finish
+
+vdw        2
+Si      O       buck   50306.1000 0.161000   46.2978
+O       O       buck    9022.7900 0.265000   85.0921
+crd 1 2
+Si      O       2.0
+Si    1.0
+O     1.0
+close
